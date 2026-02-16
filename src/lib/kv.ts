@@ -9,13 +9,20 @@ let _redis: Redis | null = null;
 function getRedis(): Redis {
     if (_redis) return _redis;
 
-    const url = process.env.UPSTASH_REDIS_REST_URL;
-    const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+    // Support both naming conventions:
+    // - UPSTASH_REDIS_REST_* (Upstash Console default)
+    // - KV_REST_API_*        (Vercel KV / Storage integration)
+    const url =
+        process.env.UPSTASH_REDIS_REST_URL ??
+        process.env.KV_REST_API_URL;
+    const token =
+        process.env.UPSTASH_REDIS_REST_TOKEN ??
+        process.env.KV_REST_API_TOKEN;
 
     if (!url || !token) {
         throw new Error(
-            "Missing UPSTASH_REDIS_REST_URL or UPSTASH_REDIS_REST_TOKEN. " +
-            "Create a free Redis store at https://console.upstash.com and add the credentials to .env.local"
+            "Missing Redis credentials. Set UPSTASH_REDIS_REST_URL & UPSTASH_REDIS_REST_TOKEN " +
+            "(or KV_REST_API_URL & KV_REST_API_TOKEN) in your environment variables."
         );
     }
 
