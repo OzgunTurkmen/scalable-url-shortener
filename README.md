@@ -2,6 +2,8 @@
 
 A lightweight, serverless URL shortener built with **Next.js 15 (App Router)**, **TypeScript**, **Tailwind CSS**, and **Upstash Redis**. Designed for one-click deployment on **Vercel** with zero external infrastructure.
 
+🔗 **Live Demo:** [scalable-url-shortener.vercel.app](https://scalable-url-shortener.vercel.app/)
+
 ![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss)
@@ -54,7 +56,7 @@ A lightweight, serverless URL shortener built with **Next.js 15 (App Router)**, 
 // Response (201)
 {
   "code": "my-link",
-  "shortUrl": "https://your-domain.vercel.app/r/my-link"
+  "shortUrl": "https://scalable-url-shortener.vercel.app/r/my-link"
 }
 ```
 
@@ -77,7 +79,7 @@ A lightweight, serverless URL shortener built with **Next.js 15 (App Router)**, 
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/scalable-url-shortener.git
+git clone https://github.com/OzgunTurkmen/scalable-url-shortener.git
 cd scalable-url-shortener
 
 # Install dependencies
@@ -106,9 +108,8 @@ Open [http://localhost:3000](http://localhost:3000).
 1. Push this repo to GitHub
 2. Go to [vercel.com/new](https://vercel.com/new) and import the repo
 3. In the Vercel dashboard, go to **Storage** → **Create** → **Upstash Redis**
-4. Link the Redis store to your project — Vercel auto-injects `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`
-5. Set `NEXT_PUBLIC_BASE_URL` to your production domain (e.g. `https://sniplink.vercel.app`)
-6. Deploy 🚀
+4. Link the Redis store to your project — Vercel auto-injects `KV_REST_API_URL` and `KV_REST_API_TOKEN` (both naming conventions are supported)
+5. Deploy 🚀
 
 ### Option B: Vercel CLI
 
@@ -126,13 +127,17 @@ vercel --prod
 
 ## 3) Environment Variables
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `UPSTASH_REDIS_REST_URL` | ✅ | Upstash Redis REST endpoint |
-| `UPSTASH_REDIS_REST_TOKEN` | ✅ | Upstash Redis REST auth token |
-| `NEXT_PUBLIC_BASE_URL` | ⚠️ | Base URL for generated short links. Defaults to `http://localhost:3000` |
+The app supports **both** naming conventions — use whichever your setup provides:
 
-Get your Upstash credentials from the [Upstash Console](https://console.upstash.com) or by creating a Redis store in the [Vercel Dashboard → Storage](https://vercel.com/dashboard/stores).
+| Variable | Alternative | Required | Description |
+|----------|-------------|----------|-------------|
+| `UPSTASH_REDIS_REST_URL` | `KV_REST_API_URL` | ✅ | Upstash Redis REST endpoint |
+| `UPSTASH_REDIS_REST_TOKEN` | `KV_REST_API_TOKEN` | ✅ | Upstash Redis REST auth token |
+| `NEXT_PUBLIC_BASE_URL` | — | ⚠️ | Base URL for short links. Auto-detected on Vercel |
+
+> **Vercel Storage** automatically injects `KV_REST_API_*` variables when you link an Upstash Redis store. No manual setup needed.
+>
+> For **local development**, get credentials from the [Upstash Console](https://console.upstash.com) and add them to `.env.local`.
 
 ---
 
